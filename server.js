@@ -33,10 +33,10 @@ if (argv.help || argv.h) {
     process.exit(0)
 }
 
-app.use(express.urlencoded({extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-if(argv.logs == 'false') {
+if(argv.log == 'false') {
     console.log("nothing");
 } else {
     const accesslog = fs.createWriteStream('access.log', {flags: 'a'})
