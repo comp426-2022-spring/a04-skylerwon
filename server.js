@@ -15,17 +15,26 @@ const server = app.listen(port, () => {
 
 if (argv.help || argv.h) {
     console.log(`
-    server.js [options] 
-    
-    --port	Set the port number for the server to listen on. Must be an integer between 1 and 65535. 
-    
-    --debug	If set to true, creates endlpoints /app/log/access/ which returns a JSON access log from the database and /app/error which throws an error with the message "Error test successful." Defaults to false. 
-    
-    --log If set to false, no log files are written. Defaults to true. Logs are always written to database. 
-    
+    server.js [options]
+
+    --port	Set the port number for the server to listen on. Must be an integer
+            between 1 and 65535.
+
+    --debug	If set to true, creates endlpoints /app/log/access/ which returns
+            a JSON access log from the database and /app/error which throws 
+            an error with the message "Error test successful." Defaults to 
+            false.
+
+    --log		If set to false, no log files are written. Defaults to true.
+            Logs are always written to database.
+
     --help	Return this message and exit.
     `)
+    process.exit(0)
 }
+
+app.use(express.urlencoded({extended: true }));
+app.use(express.json());
 
 if(argv.logs == false) {
     console.log("nothing");
@@ -52,6 +61,15 @@ app.use((req, res, next) => {
     next();
 })
 
+if (argv.debug || argv.d) {
+    app.get('/app/log/access/', (req, res, next) => {
+        const stmt = logdb.prepare("SELECT * FROM accesslog").all();
+            res.status(200).json(stmt);
+    })
+    app.get('/app/error/', (req, res, next) => {
+        throw new Error('Error')
+    })
+}
 
 app.get('/app/', (req, res) => {
     res.statusCode = 200;
