@@ -5,9 +5,9 @@ const stmt = logdb.prepare(`SELECT name FROM sqlite_master WHERE type= 'table' a
 let row = stmt.get();
 if(row == undefined) {
     console.log('Log database appears to be empty. Creating log database...')
-    const sqInit = `
+    const sqlInit = `
     CREATE TABLE accesslog (id INTEGER PRIMARY KEY, remoteaddr VARCHAR, remoteuser VARCHAR, time VARCHAR, method VARCHAR, url TEXT, protocol TEXT, httpversion TEXT, status TEXT, referrer TEXT, useragent TEXT );`
-    logdb.exec(sqInit)
+    logdb.exec(sqlInit)
 } else {
     console.log('Log database exists')
 }
