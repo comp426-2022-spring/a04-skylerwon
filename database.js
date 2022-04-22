@@ -7,7 +7,7 @@ if(row == undefined) {
     console.log('Log database appears to be empty. Creating log database...')
     const sqInit = `
     CREATE TABLE accesslog (id INTEGER PRIMARY KEY, remoteaddr VARCHAR, remoteuser VARCHAR, time VARCHAR, method VARCHAR, url TEXT, protocol TEXT, httpversion TEXT, status TEXT, referrer TEXT, useragent TEXT );`
-    logdb.exec('sqInit')
+    logdb.exec(sqInit)
 } else {
     console.log('Log database exists')
 }
